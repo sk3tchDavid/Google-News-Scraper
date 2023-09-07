@@ -2,6 +2,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
+import java.awt.desktop.ScreenSleepEvent;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -10,16 +11,35 @@ import java.io.IOException;
 
 
 public class NewsScraper {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
+
+        Write(LocalDate.now() + ScrapeTagesschau() + " \n(Tagesschau: " + LocalTime.now() + ") \n\n");
+
+        while (true){
+            if (newNews()==true){
+                Write(LocalDate.now() + ScrapeTagesschau() + " \n(Tagesschau: " + LocalTime.now() + ") \n\n");
+            }
+            else {System.out.println("keine neuen News");}
+            Thread.sleep(500);
+        }
 
 
-        String a = LocalDate.now() + ScrapeTagesschau() + " \n(Tagesschau: " + LocalTime.now() + ") \n\n";
 
-        System.out.println(a);
+        //String b = ScrapeTagesschau();
+        //String a = LocalDate.now() + b + " \n(Tagesschau: " + LocalTime.now() + ") \n\n";
 
-        Write(a); //writes the news article in the txt
-
+        //System.out.println(a);
+        //Write(a); //writes the news article in the txt
     }
+
+
+    public static boolean newNews() throws InterruptedException {
+        String h1 = ScrapeTagesschau();
+        Thread.sleep(500);
+        String h2 = ScrapeTagesschau();
+        return !h1.equals(h2);
+    }
+
 
     public static String ScrapeTagesschau() {
         String topic;
